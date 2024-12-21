@@ -42,7 +42,6 @@ class GuardianAPIService
         }
         catch ( \Exception $e )
         {
-            dd($e);
             return collect();
         }
 
