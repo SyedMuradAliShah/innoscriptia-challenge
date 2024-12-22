@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body class="bg-light d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="./index.html">News Aggregator</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./dashboard.html">My Feed</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <a href="#" class="d-block text-decoration-none text-white dropdown-toggle" id="profileDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="./profile.png" alt="Profile" class="rounded-circle"
+                            style="width: 40px; height: 40px;">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="./profile.html">Profile</a></li>
+                        <li><a class="dropdown-item" href="./preference.html">Preferences</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="./index.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h4">Welcome to your Dashboard!</h1>
+        </div>
+
+        <div class="row gy-4">
+            <div class="col-12">
+                <div class="card shadow-sm position-relative">
+                    <a href="./single-post.html" class="stretched-link"></a>
+                    <div class="row g-0 flex-column-reverse flex-md-row">
+                        <div class="col-md-9">
+                            <div class="card-body position-relative">
+                                <h5 class="card-title">Ethereum will use at least 99% less energy post merge</h5>
+                                <p class="card-text position-relative z-1">
+                                    It is a long established fact that a reader will be distracted by the readable
+                                    content of a page when looking at its layout. The point of using Lorem Ipsum is that
+                                    it has a more-or-less normal...
+                                </p>
+                                <p class="card-text text-muted small position-relative z-1">
+                                    by <span class="text-primary fw-semibold">Murad Ali</span> • 2m
+                                </p>
+                                <span class="text-primary text-decoration-none small">Read More
+                                    »</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center">
+                            <img src="https://placehold.co/160" alt="News Image" class="img-fluid w-100 news-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example" class="mb-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+    <footer class="bg-primary bg-opacity-75 text-white py-3 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 News Aggregator. All rights reserved.</p>
+            <p class="small mb-0">Designed and developed with ❤️ by Murad Ali.</p>
+        </div>
+    </footer>
+
+    <script src="./../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings Page</title>
+    <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body class="bg-light d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="./index.html">News Aggregator</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./dashboard.html">My Feed</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <a href="#" class="d-block text-decoration-none text-white dropdown-toggle" id="profileDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="./profile.png" alt="Profile" class="rounded-circle"
+                            style="width: 40px; height: 40px;">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="./profile.html">Profile</a></li>
+                        <li><a class="dropdown-item" href="./preference.html">Preferences</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="./index.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <h1 class="h4 mb-4">Customize Your News Feed</h1>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title mt-4">Add New Preferences</h5>
+                <form class="mb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="preferredSources" class="form-label">Preferred Sources</label>
+                                <select class="form-select" id="preferredSources">
+                                    <option selected disabled>Select a source</option>
+                                    <option value="TechCrunch">TechCrunch</option>
+                                    <option value="BBC">BBC</option>
+                                    <option value="CNN">CNN</option>
+                                </select>
+                                <button type="button" class="btn btn-primary btn-sm mt-2">Add Source</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="preferredCategories" class="form-label">Preferred Categories</label>
+                                <select class="form-select" id="preferredCategories">
+                                    <option selected disabled>Select a category</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Health">Health</option>
+                                    <option value="Business">Business</option>
+                                </select>
+                                <button type="button" class="btn btn-primary btn-sm mt-2">Add Category</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="preferredAuthors" class="form-label">Preferred Authors</label>
+                                <select class="form-select" id="preferredAuthors">
+                                    <option selected disabled>Select an author</option>
+                                    <option value="John Doe">John Doe</option>
+                                    <option value="Jane Smith">Jane Smith</option>
+                                    <option value="Robert Brown">Robert Brown</option>
+                                </select>
+                                <button type="button" class="btn btn-primary btn-sm mt-2">Add Author</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <h5 class="card-title">Your Preferences</h5>
+                <div>
+                    <ul class="list-group mb-3" id="preferencesList">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            TechCrunch (Source)
+                            <button class="btn btn-sm btn-danger">Remove</button>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Technology (Category)
+                            <button class="btn btn-sm btn-danger">Remove</button>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            John Doe (Author)
+                            <button class="btn btn-sm btn-danger">Remove</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-primary bg-opacity-75 text-white py-3 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 News Aggregator. All rights reserved.</p>
+            <p class="small mb-0">Designed and developed with ❤️ by Murad Ali.</p>
+        </div>
+    </footer>
+
+    <script src="./../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+
+</html>
