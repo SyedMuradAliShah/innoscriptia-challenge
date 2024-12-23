@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Str;
+
 class GuardianAPIService
 {
     protected $apiKey;
@@ -21,7 +23,7 @@ class GuardianAPIService
             return collect($response->response->results)
                 ->filter(function ($article)
                 {
-                    return ! empty($article->webTitle) && ! empty($article->fields->body) && ! is_null($article->fields->thumbnail ?? null) && ! is_null($article->fields->byline ?? null) && ! is_null($article->pillarName ?? null);
+                    return ! empty($article->webTitle) && ! empty($article->fields->body) && ! is_null($article->fields->thumbnail ?? null) && ! is_null($article->pillarName ?? null);
                 })
                 ->map(function ($article)
                 {
@@ -34,7 +36,7 @@ class GuardianAPIService
                         'subcategory'  => $article->sectionName ?? null,
                         'source'       => 'The Guardian',
                         'source_url'   => 'https://www.theguardian.com',
-                        'author'       => $article->fields->byline ?? null,
+                        'author'       => $this->getFirstAuthor($article->fields->byline),
                         'api_used'     => 'content.guardianapis.com',
                         'published_at' => $article->webPublicationDate ?? null,
                     ];
@@ -45,5 +47,19 @@ class GuardianAPIService
             return collect();
         }
 
+    }
+
+    protected function getFirstAuthor($authors)
+    {
+        if ($authors)
+        {
+            // Remove "By" prefix and trim whitespace
+            $authors = Str::replaceFirst('By ', '', $authors);
+
+            // Return the first author if there are multiple authors
+            return Str::contains($authors, ',') ? Str::before($authors, ',') : $authors;
+        }
+
+        return null;
     }
 }

@@ -22,7 +22,7 @@ class NYTimesAPIService
 
             return collect($response->results)->filter(function ($article)
             {
-                return ! empty($article->title) && ! empty($article->abstract) && ! empty($article->url) && ! empty($article->multimedia[0]->url ?? null) && ! empty($article->byline) && ! empty($article->section);
+                return ! empty($article->title) && ! empty($article->abstract) && ! empty($article->url) && ! empty($article->multimedia[0]->url ?? null) && ! empty($article->section);
             })
                 ->map(function ($article)
                 {
@@ -35,7 +35,7 @@ class NYTimesAPIService
                         'subcategory'  => Str::upper($article->subsection),
                         'source'       => 'The New York Times',
                         'source_url'   => 'https://www.nytimes.com',
-                        'author'       => $article->byline,
+                        'author'       => $this->getFirstAuthor($article->byline),
                         'api_used'     => 'api.nytimes.com',
                         'published_at' => $article->published_date,
                     ];
@@ -45,6 +45,19 @@ class NYTimesAPIService
         {
             return collect();
         }
+    }
 
+    protected function getFirstAuthor($authors)
+    {
+        if ($authors)
+        {
+            // Remove "By" prefix and trim whitespace
+            $authors = Str::replaceFirst('By ', '', $authors);
+
+            // Return the first author if there are multiple authors
+            return Str::contains($authors, ',') ? Str::before($authors, ',') : $authors;
+        }
+
+        return null;
     }
 }

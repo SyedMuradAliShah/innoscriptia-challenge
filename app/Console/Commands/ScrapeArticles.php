@@ -33,7 +33,6 @@ class ScrapeArticles extends Command
      */
     public function handle()
     {
-        Log::error('ScrapeArticles command started.');
 
         $apis = [ new NewsAPIService(), new GuardianAPIService(), new NYTimesAPIService() ];
 
@@ -41,18 +40,14 @@ class ScrapeArticles extends Command
         {
             try
             {
-                Log::error('Fetching articles from ' . class_basename($api) . '...');
                 $articles = $api->fetchArticles();
 
-                Log::error('Processing articles from ' . class_basename($api) . '...');
                 $this->processArticles($articles);
 
-                Log::error('Articles from ' . class_basename($api) . ' processed successfully.');
                 $this->info('Articles from ' . class_basename($api) . ' processed successfully.');
             }
             catch ( \Exception $e )
             {
-                Log::error('Failed to process articles from ' . class_basename($api) . ': ' . $e->getMessage() . ' ' . $e->getTraceAsString() . ' ' . $e->getFile() . ' ' . $e->getLine());
 
                 $this->error('Failed to process articles from ' . class_basename($api) . ': ' . $e->getMessage());
             }
@@ -112,9 +107,9 @@ class ScrapeArticles extends Command
         {
             if (! empty($article['subcategory']) && ! empty($article['category']))
             {
-                $subcategoriesData[$article['subcategory']] = [
-                    'name'      => $article['subcategory'],
-                    'parent_id' => null, // will be map it later
+                $subcategoriesData[$article['category']] = [
+                    'name'            => $article['subcategory'],
+                    'parent_id'       => null, // will be map it later
                 ];
             }
         }
@@ -139,10 +134,11 @@ class ScrapeArticles extends Command
      */
     protected function storeSubcategories(array $subcategoriesData, array $categoryIds) : array
     {
-        foreach ($subcategoriesData as $data)
+        foreach ($subcategoriesData as $name => &$data)
         {
-            $data['parent_id'] = $categoryIds[$data['parent_id']] ?? null;
+            $data['parent_id'] = $categoryIds[$name] ?? null;
         }
+
 
         Category::upsert($subcategoriesData, [ 'name', 'parent_id' ]);
 
