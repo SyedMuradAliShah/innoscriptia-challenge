@@ -30,7 +30,7 @@ export default function Navbar() {
                                         <img src="https://placehold.co/40" alt="Profile" className="rounded-circle" />
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                                        <li><a className="dropdown-item" href="./profile.html">Profile</a></li>
+                                        <li><Link className="dropdown-item" href={route('profile.edit')}>Profile</Link></li>
                                         <li><a className="dropdown-item" href="./preference.html">Preferences</a></li>
                                         <li>
                                             <hr className="dropdown-divider" />
