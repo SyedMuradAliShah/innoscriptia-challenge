@@ -4,9 +4,9 @@ import InputLabel from '@/Components/InputLabel';
 import DefaultLayout from '@/Layouts/DefaultLayout';
 import SelectField from '@/Components/SelectField';
 import Posts from '@/Components/Posts';
-import { Head, useForm, router } from '@inertiajs/react';
+import { Head, Link, useForm, router } from '@inertiajs/react';
 
-export default function Home({ articles, links, categories = [], authors = [], sources = [], filters }) {
+export default function MyFeed({ articles, links, categories = [], authors = [], sources = [], filters }) {
     const { data, setData, get, reset } = useForm({
         q: filters.q || '',
         date: filters.date || '',
@@ -35,7 +35,7 @@ export default function Home({ articles, links, categories = [], authors = [], s
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        get(route('home'), { preserveState: true });
+        get(route('myfeed'), { preserveState: true });
     };
 
     const handleReset = () => {
@@ -46,12 +46,12 @@ export default function Home({ articles, links, categories = [], authors = [], s
             source: '',
             author: '',
         });
-        router.get(route('home')); // This removes all query parameters
+        router.get(route('myfeed')); // This removes all query parameters
     };
 
     return (
         <>
-            <Head title="Home" />
+            <Head title="My Feed" />
             <DefaultLayout>
                 <div className="container py-4">
                     <div className="d-flex justify-content-between align-items-center mb-3">

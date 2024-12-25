@@ -18,9 +18,9 @@ export default function SinglePost({ article }) {
                 <div className="container py-4 news-item">
                     <div className="mb-4">
                         <h1 className="h3">{article.title}</h1>
-                        <p className="text-muted">
+                        <p className="text-muted small">
                             {article.source_url && (
-                                <a href={article.source_url} className='text-primary fw-semibold text-decoration-none small' target="_blank" rel="noopener noreferrer">{article.source} </a>
+                                <a href={article.source_url} className='text-primary fw-semibold text-decoration-none ' target="_blank" rel="noopener noreferrer">{article.source} </a>
                             )}
 
                             {article.category && (
@@ -39,9 +39,8 @@ export default function SinglePost({ article }) {
                             <img src={article.image_url} alt="Blog Image" className="img-fluid w-100 news-image" />
                         </div>
                         <div className="content">
-                            <p>{article.description}</p>
+                            <div dangerouslySetInnerHTML={{ __html: article.description }} />
                             <p>
-
                                 {article.external_url && (
                                     <a href={article.external_url} className='text-primary text-decoration-none small position-relative z-1' target="_blank" rel="noopener noreferrer">Read full on source</a>
                                 )}

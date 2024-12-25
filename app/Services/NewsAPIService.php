@@ -42,7 +42,7 @@ class NewsAPIService
                         'subcategory'  => null,
                         'source'       => $article->source->name ?? null,
                         'source_url'   => $source?->url ?? null,
-                        'author'       => $this->getFirstAuthor($article->author),
+                        'author'       => $this->getFirstAuthor($article->author ?? null),
                         'api_used'     => 'newsapi.org',
                         'published_at' => $article->publishedAt,
                     ];
@@ -56,16 +56,12 @@ class NewsAPIService
 
     protected function getFirstAuthor($authors)
     {
-        if ($authors)
-        {
-            // Remove "By" prefix and trim whitespace
-            $authors = Str::replaceFirst('By ', '', $authors);
+        // Remove "By" prefix and trim whitespace
+        $authors = Str::replaceFirst('By ', '', $authors);
 
-            // Return the first author if there are multiple authors
-            return Str::contains($authors, ',') ? Str::before($authors, ',') : $authors;
-        }
+        // Return the first author if there are multiple authors
+        return Str::contains($authors, ',') ? Str::before($authors, ',') : $authors;
 
-        return null;
     }
 
 }

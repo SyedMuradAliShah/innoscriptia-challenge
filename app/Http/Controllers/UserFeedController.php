@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
-class HomeController extends Controller
+class UserFeedController extends Controller
 {
     public function index(Request $request)
     {
@@ -37,7 +37,7 @@ class HomeController extends Controller
             $query->where('author', $request->author);
         }
 
-        if($request->filled('source'))
+        if ($request->filled('source'))
         {
             $query->where('source', $request->source);
         }
@@ -66,7 +66,7 @@ class HomeController extends Controller
         })->values();
 
 
-        return Inertia::render('Home', [
+        return Inertia::render('MyFeed', [
             'articles'   => collect($articles->items())->map(function ($article)
             {
                 return [
@@ -89,28 +89,6 @@ class HomeController extends Controller
             'authors'    => $authors,
             'sources'    => $sources,
             'filters'    => $request->only([ 'q', 'date', 'category', 'author', 'source' ]),
-        ]);
-    }
-
-    public function show($slug)
-    {
-        $article = Article::where('slug', $slug)->with('category', 'subcategory')->firstOrFail();
-
-        return Inertia::render('SinglePost', [
-            'article' => [
-                'id'           => $article->id,
-                'slug'         => $article->slug,
-                'title'        => $article->title,
-                'description'  => $article->description,
-                'category'     => $article->category,
-                'subcategory'  => $article->subcategory,
-                'source'       => $article->source,
-                'source_url'   => $article->source_url,
-                'external_url' => $article->external_url,
-                'author'       => $article->author,
-                'published_at' => $article->published_at->diffForHumans(),
-                'image_url'    => $article->image_url,
-            ],
         ]);
     }
 }
