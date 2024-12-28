@@ -35,7 +35,7 @@ export default function MyFeed({ articles, links, categories = [], authors = [],
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        get(route('myfeed'), { preserveState: true });
+        get(route('myfeed.index'), { preserveState: true });
     };
 
     const handleReset = () => {
@@ -46,7 +46,7 @@ export default function MyFeed({ articles, links, categories = [], authors = [],
             source: '',
             author: '',
         });
-        router.get(route('myfeed')); // This removes all query parameters
+        router.get(route('myfeed.index')); // This removes all query parameters
     };
 
     return (

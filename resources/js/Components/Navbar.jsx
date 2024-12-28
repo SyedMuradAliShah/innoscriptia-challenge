@@ -21,7 +21,7 @@ export default function Navbar() {
 
                                 <ul className="navbar-nav me-auto">
                                     <li className="nav-item">
-                                        <Link className="nav-link active" href={route('myfeed')}>My Feed</Link>
+                                        <Link className={`nav-link ${route().current('myfeed.index') ? 'active' : ''}`} href={route('myfeed.index')}>My Feed</Link>
                                     </li>
                                 </ul>
                                 <div className="dropdown">
@@ -31,7 +31,7 @@ export default function Navbar() {
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                                         <li><Link className="dropdown-item" href={route('profile.edit')}>Profile</Link></li>
-                                        <li><a className="dropdown-item" href="./preference.html">Preferences</a></li>
+                                        <li><Link className="dropdown-item" href={route('preferences.index')}>Preferences</Link></li>
                                         <li>
                                             <hr className="dropdown-divider" />
                                         </li>

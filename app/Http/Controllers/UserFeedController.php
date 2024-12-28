@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\UserPreference;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -12,7 +14,27 @@ class UserFeedController extends Controller
 {
     public function index(Request $request)
     {
+        $userPreferences = UserPreference::firstOrCreate(
+            [ 'user_id' => auth()->id() ],
+        );
+
         $query = Article::with('subcategory', 'category')->latest('published_at');
+
+        $query->where(function ($q) use ($userPreferences) {
+            if (!empty($userPreferences->sources)) {
+                $q->whereIn('source', $userPreferences->sources);
+            }
+        
+            if (!empty($userPreferences->authors)) {
+                $q->orWhereIn('author', $userPreferences->authors);
+            }
+        
+            if (!empty($userPreferences->categories)) {
+                $q->orWhereHas('category', function ($subQuery) use ($userPreferences) {
+                    $subQuery->whereIn('name', $userPreferences->categories);
+                });
+            }
+        });
 
         if ($request->filled('q'))
         {
@@ -44,26 +66,38 @@ class UserFeedController extends Controller
 
         $articles = $query->paginate(10);
 
-        $categories = Category::all()->map(function ($category)
-        {
-            return [ 'value' => $category->name, 'label' => $category->name ];
-        });
+        $categories = Category::whereIn('name', $userPreferences->categories ?? [])
+            ->get()
+            ->map(function ($category)
+            {
+                return [ 'value' => $category->name, 'label' => $category->name ];
+            });
 
-        $authors = Article::select('author')->distinct()->orderBy('author')->get()->filter(function ($author)
-        {
-            return ! is_null($author->author) && $author->author !== '';
-        })->map(function ($author)
-        {
-            return [ 'value' => $author->author, 'label' => $author->author ];
-        })->values();
+        $authors = Article::whereIn('author', $userPreferences->authors ?? [])
+            ->select('author')
+            ->distinct()
+            ->orderBy('author')
+            ->get()
+            ->filter(function ($author)
+            {
+                return ! is_null($author->author) && $author->author !== '';
+            })->map(function ($author)
+            {
+                return [ 'value' => $author->author, 'label' => $author->author ];
+            })->values();
 
-        $sources = Article::select('source')->distinct()->orderBy('source')->get()->filter(function ($source)
-        {
-            return ! is_null($source->source) && $source->source !== '';
-        })->map(function ($source)
-        {
-            return [ 'value' => $source->source, 'label' => $source->source ];
-        })->values();
+        $sources = Article::whereIn('source', $userPreferences->sources ?? [])
+            ->select('source')
+            ->distinct()
+            ->orderBy('source')
+            ->get()
+            ->filter(function ($source)
+            {
+                return ! is_null($source->source) && $source->source !== '';
+            })->map(function ($source)
+            {
+                return [ 'value' => $source->source, 'label' => $source->source ];
+            })->values();
 
 
         return Inertia::render('MyFeed', [
