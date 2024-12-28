@@ -12,14 +12,23 @@ use Inertia\Inertia;
 
 class UserFeedController extends Controller
 {
+    /**
+     * Display the user's personalized feed based on their preferences and optional filters.
+     *
+     * @param Request $request
+     * @return \Inertia\Response
+     */
     public function index(Request $request)
     {
+        // Retrieve or create the authenticated user's preferences.
         $userPreferences = UserPreference::firstOrCreate(
             [ 'user_id' => auth()->id() ],
         );
 
+        // Initialize the query with related subcategory and category, ordered by latest publication date.
         $query = Article::with('subcategory', 'category')->latest('published_at');
 
+        // Apply user preference filters: sources, authors, and categories.
         $query->where(function ($q) use ($userPreferences) {
             if (!empty($userPreferences->sources)) {
                 $q->whereIn('source', $userPreferences->sources);
@@ -36,6 +45,7 @@ class UserFeedController extends Controller
             }
         });
 
+        // Apply additional filters based on request parameters.
         if ($request->filled('q'))
         {
             $query->where('title', 'like', '%' . $request->q . '%');
@@ -64,8 +74,10 @@ class UserFeedController extends Controller
             $query->where('source', $request->source);
         }
 
+        // Paginate the results, 10 articles per page.
         $articles = $query->paginate(10);
 
+        // Prepare categories based on user preferences for the filter dropdown.
         $categories = Category::whereIn('name', $userPreferences->categories ?? [])
             ->get()
             ->map(function ($category)
@@ -73,6 +85,7 @@ class UserFeedController extends Controller
                 return [ 'value' => $category->name, 'label' => $category->name ];
             });
 
+        // Prepare authors based on user preferences for the filter dropdown.
         $authors = Article::whereIn('author', $userPreferences->authors ?? [])
             ->select('author')
             ->distinct()
@@ -80,12 +93,13 @@ class UserFeedController extends Controller
             ->get()
             ->filter(function ($author)
             {
-                return ! is_null($author->author) && $author->author !== '';
+                return ! is_null($author->author) && $author->author !== ''; // Filter out null or empty authors.
             })->map(function ($author)
             {
                 return [ 'value' => $author->author, 'label' => $author->author ];
             })->values();
 
+        // Prepare sources based on user preferences for the filter dropdown.
         $sources = Article::whereIn('source', $userPreferences->sources ?? [])
             ->select('source')
             ->distinct()
@@ -93,13 +107,13 @@ class UserFeedController extends Controller
             ->get()
             ->filter(function ($source)
             {
-                return ! is_null($source->source) && $source->source !== '';
+                return ! is_null($source->source) && $source->source !== ''; // Filter out null or empty sources.
             })->map(function ($source)
             {
                 return [ 'value' => $source->source, 'label' => $source->source ];
             })->values();
 
-
+        // Render the MyFeed view with the prepared data.
         return Inertia::render('MyFeed', [
             'articles'   => collect($articles->items())->map(function ($article)
             {

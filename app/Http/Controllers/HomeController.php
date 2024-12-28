@@ -10,8 +10,15 @@ use Inertia\Inertia;
 
 class HomeController extends Controller
 {
+    /**
+     * Display a list of articles with optional filtering.
+     *
+     * @param Request $request
+     * @return \Inertia\Response
+     */
     public function index(Request $request)
     {
+        // Start building the query with related subcategory and category, ordered by latest publication date.
         $query = Article::with('subcategory', 'category')->latest('published_at');
 
         if ($request->filled('q'))
@@ -42,24 +49,28 @@ class HomeController extends Controller
             $query->where('source', $request->source);
         }
 
+        // Paginate the results, 10 articles per page.
         $articles = $query->paginate(10);
 
+        // Prepare categories for the filter dropdown.
         $categories = Category::all()->map(function ($category)
         {
             return [ 'value' => $category->name, 'label' => $category->name ];
         });
 
+        // Prepare authors for the filter dropdown.
         $authors = Article::select('author')->distinct()->orderBy('author')->get()->filter(function ($author)
         {
-            return ! is_null($author->author) && $author->author !== '';
+            return ! is_null($author->author) && $author->author !== ''; // Filter out null or empty authors.
         })->map(function ($author)
         {
             return [ 'value' => $author->author, 'label' => $author->author ];
         })->values();
 
+        // Prepare sources for the filter dropdown.
         $sources = Article::select('source')->distinct()->orderBy('source')->get()->filter(function ($source)
         {
-            return ! is_null($source->source) && $source->source !== '';
+            return ! is_null($source->source) && $source->source !== ''; // Filter out null or empty sources.
         })->map(function ($source)
         {
             return [ 'value' => $source->source, 'label' => $source->source ];
@@ -92,6 +103,12 @@ class HomeController extends Controller
         ]);
     }
 
+    /**
+     * Display a single article based on the provided slug.
+     *
+     * @param string $slug
+     * @return \Inertia\Response
+     */
     public function show($slug)
     {
         $article = Article::where('slug', $slug)->with('category', 'subcategory')->firstOrFail();
