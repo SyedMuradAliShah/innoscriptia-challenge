@@ -1,0 +1,22 @@
+services:
+  laravel:
+    container_name: app
+    build: .
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - ./database/database.sqlite:/var/www/html/database/database.sqlite
+      - ./storage:/var/www/html/storage
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache
+      - ./public/build:/var/www/html/public/build
+    env_file:
+      - .env
+    ports:
+      - "8001:80"
+    networks:
+      - laravel
+
+networks:
+  laravel:
+    driver: bridge
